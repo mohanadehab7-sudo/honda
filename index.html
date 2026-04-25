@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div id="loginScreen" class="login-container">
+        <div class="login-box">
+            <div class="logo">
+                <i class="fas fa-gamepad"></i>
+                <h1>Admin Panel</h1>
+                <p>لوحة التحكم الإدارية</p>
+            </div>
+            
+            <form id="loginForm">
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="username" placeholder="البريد الإلكتروني" required>
+                </div>
+                
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" placeholder="كلمة المرور" required>
+                </div>
+                
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    دخول
+                </button>
+                
+                <div id="loginError" class="error-message" style="display: none;"></div>
+            </form>
+        </div>
+    </div>
+
+    <div id="mainApp" class="main-app" style="display: none;">
+        <header class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <i class="fas fa-gamepad"></i>
+                    <h1>Admin Panel</h1>
+                </div>
+                
+                <div class="user-section">
+                    <span id="welcomeUser">مرحباً، المدير</span>
+                    <button id="logoutBtn" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        خروج
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <nav class="nav-tabs">
+            <button class="tab-btn active" data-tab="dashboard">
+                <i class="fas fa-chart-dashboard"></i>
+                الرئيسية
+            </button>
+            <button class="tab-btn" data-tab="users">
+                <i class="fas fa-users"></i>
+                المستخدمين
+            </button>
+            <button class="tab-btn" data-tab="codes">
+                <i class="fas fa-key"></i>
+                أكواد التفعيل
+            </button>
+            <button class="tab-btn" data-tab="settings">
+                <i class="fas fa-cog"></i>
+                الإعدادات
+            </button>
+        </nav>
+
+        <main class="main-content">
+            
+            <div id="dashboard" class="tab-content active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalUsers">0</h3>
+                            <p>إجمالي المستخدمين</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon active">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="activeUsers">0</h3>
+                            <p>نشطين اليوم</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon warning">
+                            <i class="fas fa-user-slash"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="blockedUsers">0</h3>
+                            <p>محظورين</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon success">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="availableCodes">0</h3>
+                            <p>أكواد متاحة</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+                    <h2>إجراءات سريعة</h2>
+                    <div class="action-buttons">
+                        <button class="action-btn danger" id="killSwitchBtn">
+                            <i class="fas fa-power-off"></i>
+                            إيقاف التطبيق للكل
+                        </button>
+                        
+                        <button class="action-btn success" id="activateAllBtn">
+                            <i class="fas fa-play"></i>
+                            تفعيل التطبيق للكل
+                        </button>
+                        
+                        <button class="action-btn primary" id="generateCodesBtn">
+                            <i class="fas fa-plus"></i>
+                            توليد 10 أكواد
+                        </button>
+                        
+                        <button class="action-btn info" id="refreshDataBtn">
+                            <i class="fas fa-sync"></i>
+                            تحديث البيانات
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="users" class="tab-content">
+                <div class="section-header">
+                    <h2>إدارة المستخدمين</h2>
+                    <div class="filters">
+                        <select id="userFilter">
+                            <option value="all">جميع المستخدمين</option>
+                            <option value="active">النشطين فقط</option>
+                            <option value="blocked">المحظورين فقط</option>
+                        </select>
+                        <button id="refreshUsersBtn" class="btn-secondary">
+                            <i class="fas fa-sync"></i>
+                            تحديث
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table id="usersTable" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Device ID</th>
+                                <th>اسم المستخدم</th>
+                                <th>آخر ظهور</th>
+                                <th>الحالة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="codes" class="tab-content">
+                <div class="section-header">
+                    <h2>إدارة أكواد التفعيل</h2>
+                    <div class="code-actions">
+                        <button id="generateSingleCodeBtn" class="btn-primary">
+                            <i class="fas fa-plus"></i>
+                            توليد كود واحد
+                        </button>
+                        <button id="generate10CodesBtn" class="btn-success">
+                            <i class="fas fa-plus-circle"></i>
+                            توليد 10 أكواد
+                        </button>
+                        <button id="refreshCodesBtn" class="btn-secondary">
+                            <i class="fas fa-sync"></i>
+                            تحديث
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table id="codesTable" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>الكود</th>
+                                <th>الحالة</th>
+                                <th>استخدم بواسطة</th>
+                                <th>تاريخ الإنشاء</th>
+                                <th>تاريخ الاستخدام</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="codesTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="settings" class="tab-content">
+                <div class="settings-section">
+                    <h2>إعدادات التطبيق</h2>
+                    
+                    <div class="setting-item">
+                        <label for="appStatus">حالة التطبيق:</label>
+                        <select id="appStatus">
+                            <option value="false">مفعل للجميع</option>
+                            <option value="true">مغلق (يتطلب اشتراك)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="globalMessage">الرسالة العامة:</label>
+                        <textarea id="globalMessage" rows="3" placeholder="الرسالة التي ستظهر للمستخدمين"></textarea>
+                    </div>
+                    
+                    <button id="saveSettingsBtn" class="btn-primary">
+                        <i class="fas fa-save"></i>
+                        حفظ الإعدادات
+                    </button>
+                </div>
+
+                <div class="danger-zone">
+                    <h3>منطقة الخطر</h3>
+                    <p>هذه الإجراءات لا يمكن التراجع عنها!</p>
+                    
+                    <button id="deleteAllCodesBtn" class="btn-danger">
+                        <i class="fas fa-trash"></i>
+                        حذف جميع الأكواد غير المستخدمة
+                    </button>
+                    
+                    <button id="resetAllUsersBtn" class="btn-danger">
+                        <i class="fas fa-user-times"></i>
+                        إعادة تعيين جميع المستخدمين
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+        <p>جاري التحميل...</p>
+    </div>
+
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
+</body>
+</html>
